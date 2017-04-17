@@ -1,0 +1,151 @@
+﻿@{
+    ViewBag.Title = "Contact";
+}
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+    <script src="~/Scripts/morris.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.min.js"></script>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.min.css">
+    <link href="~/Content/morris.css" rel="stylesheet" />
+    @*<h1>Line Chart</h1>
+    <div id="graph"></div>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+
+        //$.getJSON('/Home/GetJSON', function (results) {
+        //    alert(results);
+        //    console.log(results);
+        //    //var data = results.data;
+        //    //console.log(data);
+        //    //Morris.Line({
+        //    //    element: 'graph',
+        //    //    data: data,
+        //    //    xkey: 'x',
+        //    //    ykeys: ['y'],
+        //    //    labels: ['Efficiency'],
+        //    //    units: '%'
+        //    //});
+
+        //});
+
+        var usersJson = GetSampleUsersList();
+        var getReportColumnsParams = {
+            "usersJson": usersJson
+        };
+        alert(getReportColumnsParams.usersJson);
+            Morris.Line({
+                element: 'graph',
+                data: getReportColumnsParams.usersJson,
+                xkey: 'UserName',
+                ykeys: ['Company'],
+                labels: ['Efficiency'],
+                units: '%'
+            });
+        function GetSampleUsersList() {
+            var userDetails = {};
+            var usersList = [];
+            for (var i = 1; i <= 3; i++) {
+                userDetails["UserId"] = i;
+                userDetails["UserName"] = "User- " + i;
+                userDetails["Company"] = "Company- " + i;
+                usersList.push(userDetails);
+            }
+            return JSON.stringify(usersList);
+        }
+    });
+    </script>*@
+
+<h1>Bar charts</h1>
+<div id="graph"></div>
+<pre id="code" class="prettyprint linenums">
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var usersJson = GetSampleUsersList();
+            //alert(usersJson);
+            //var getReportColumnsParams = {
+            //    "usersJson": usersJson
+            //};
+            //alert(getReportColumnsParams.usersJson);
+            var graphData = [];
+            for (var i = 0; i < usersJson.length; i++) {
+                var result = usersJson[i];
+                //alert(result.x);
+                var graphPoint = {};
+                graphPoint.x = result.x;
+                graphPoint.y = result.y;
+                graphData.push(graphPoint);
+            }
+
+            //alert(graphData);
+            Morris.Bar({
+                element: 'graph',
+                data: graphData,
+                xkey: 'x',
+                ykeys: ['y'],
+                labels: ['Y']
+            }).on('click', function (i, row) {
+                console.log(i, row);
+            });
+
+
+
+            function GetSampleUsersList() {
+                var userDetails = {};
+                var usersList = [];
+                
+                    userDetails["x"] = "User- " + 1;
+                    userDetails["y"] =  1+2;
+                    usersList.push(userDetails);
+                    userDetails["x"] = "User- " + 3;
+                    userDetails["y"] = 3 + 2;
+                    usersList.push(userDetails);
+              
+                //alert(usersList.length);
+                //return JSON.stringify(usersList);
+                return usersList;
+            }
+        });
+    </script>
+    @*<script type="text/javascript">
+        jQuery(function ($) {
+            $.ajax({
+                url: '@Url.Action("GetJSON", "Home")',
+                contentType: 'application/json',
+                dataType: 'json',
+                type: 'get',
+                async: false,
+                success: function (data) {
+                    //var content = (JSON.stringify(data));
+                    //alert('Data-> '+data);
+                    var graphData = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var result = data[i];
+                        var graphPoint = {};
+                        graphPoint.x = result.UserName;
+                        graphPoint.y = result.UserID;
+                        graphData.push(graphPoint);
+                    }
+                    alert(graphData);
+                    Morris.Bar({
+                        element: 'graph',
+                        data: data,
+                        xkey: 'UserName',
+                        ykeys: ['UserID'],
+                        labels: ['Eff']
+                    }).on('click', function (i, row) {
+                        console.log(i, row);
+                    });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('Error - ' + errorThrown);
+                }
+            });
+
+        });
+
+    </script>*@
+        
+</pre>

@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<script src="~/App_Content/FusionChart/js/fusioncharts.js"></script>
+<script src="~/App_Content/FusionChart/js/themes/fusioncharts.theme.fint.js"></script>
+
+
+    <script type="text/javascript">
+        FusionCharts.ready(function () {
+            var test = [];
+            
+            $.ajax({
+                url: '@Url.Action("GetJSON", "Home")',
+                contentType: 'application/json',
+                dataType: 'json',
+                type: 'get',
+                async: false,
+                success: function (data) {
+                    //alert(data.length);
+                    for (var i = 0; i < data.length; i++) {
+                        var testDetails = {};
+                        var result = data[i];
+                        //alert(result.label + '   ' + result.value);
+                        testDetails["label"] = result.label;
+                        testDetails["value"] = result.value;
+                        test.push(testDetails);
+                    }
+                    var revenueChart = new FusionCharts({
+                        "type": "column2d",
+                        "renderAt": "chartContainer",
+                        "width": "500",
+                        "height": "300",
+                        "dataFormat": "json",
+                        "dataSource": {
+                            "chart": {
+                                "caption": "Graph From the Database",
+                                "subCaption": "KDS Garment Ltd",
+                                "xAxisName": "User",
+                                "yAxisName": "Revenues (In USD)",
+                                "theme": "fint"
+                            },
+                            "data": test
+                        }
+
+                    });
+                    revenueChart.render();
+                }
+            });
+   
+})
+    </script>
+<div class="row">
+    <div id="chartContainer">FusionCharts XT will load here!</div>
+   
+</div>
